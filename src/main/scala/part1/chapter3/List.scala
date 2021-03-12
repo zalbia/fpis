@@ -19,4 +19,20 @@ object List {
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
+
+  def iterator[A](as: List[A]): Iterator[A] = new Iterator[A] {
+    var list = as
+
+    def hasNext: Boolean = as match {
+      case Nil => false
+      case _ => true
+    }
+
+    def next(): A = list match {
+      case Nil => throw new NoSuchElementException("Calling next on an empty iterator")
+      case Cons(head, tail) =>
+        list = tail
+        head
+    }
+  }
 }
