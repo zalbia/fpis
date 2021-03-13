@@ -2,10 +2,14 @@ package part1.chapter3
 
 import scala.annotation.tailrec
 
-sealed trait List[+A] { self =>
+sealed trait List[+A] {
+  self =>
+
+  import List.{Cons, Nil}
+
   def unsafeFoldRight[B](z: B)(f: (A, B) => B): B = self match {
     case Nil => z
-    case Cons(x, xs) =>f(x, xs.unsafeFoldRight(z)(f))
+    case Cons(x, xs) => f(x, xs.unsafeFoldRight(z)(f))
   }
 
   def iterator: Iterator[A] = new Iterator[A] {
@@ -169,10 +173,13 @@ sealed trait List[+A] { self =>
       self.dropWhile(_ != head).zipWith(sub)(_ == _).foldLeft(true)(_ && _)
   }
 }
-case object Nil extends List[Nothing]
-case class Cons[A](head: A, tail: List[A]) extends List[A]
 
 object List {
+
+  case object Nil extends List[Nothing]
+
+  case class Cons[A](head: A, tail: List[A]) extends List[A]
+
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
@@ -191,8 +198,16 @@ object List {
     case Cons(x, xs) => x * product(xs)
   }
 
-  def product2(ds :List[Double]): Double =
+  def product2(ds: List[Double]): Double =
     ds.unsafeFoldRight(1.0)(_ * _)
+
+  /** exercise 3.1 */
+  def exercise1: Int = List(1, 2, 3, 4, 5) match {
+    case Nil => 42
+    case Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y
+    case Cons(h, t) => h + sum(t)
+    case _ => 101
+  }
 
   /**
    * exercise 3.8
@@ -214,8 +229,10 @@ object List {
       List(2, 1),
       List(1, 2, 5, 1, 2)
     )
+    println("match expression result")
+    println(exercise1) // 3
 
-    println("tail")
+    println("\ntail")
     intLists.map(_.tailOption).foreach(println)
 
     println("\nsetHead")
