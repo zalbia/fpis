@@ -31,12 +31,12 @@ sealed trait Tree[+A] {
 
   /**
    * exercise 3.29
-   *
+   * <p></p>
    * In `List`, `foldLeft` & `foldRight` have different semantics owing to
    * `List`'s right association.
-   *
+   * <p></p>
    * In `Tree`, there can only be one fold as the structure is symmetrical.
-   *
+   * <p></p>
    * A fold on a structure mirrors the structure itself.
    */
   def fold[B](f: A => B)(g: (B, B) => B): B = self match {
@@ -65,35 +65,4 @@ object Tree {
   case class Leaf[A](value: A) extends Tree[A]
 
   case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
-
-  def main(args: Array[String]): Unit = {
-    val trees = Array(
-      Leaf(1),
-      Branch(Leaf(2), Leaf(4)),
-      Branch(Branch(Leaf(3), Leaf(1)), Branch(Leaf(5), Leaf(2))),
-      Branch(Branch(Leaf(3), Leaf(1)), Leaf(2)),
-    )
-
-    println("size")
-    trees.map(_.size).foreach(println)
-
-    println("\nmax")
-    trees.map(_.max).foreach(println)
-
-    println("\ndepth")
-    trees.map(_.depth).foreach(println)
-
-    println("\nmap")
-    trees.map(_.map(_ + 1)).foreach(println)
-
-    println("\nfold")
-    println("foldSize")
-    trees.map(_.foldSize).foreach(println)
-    println("foldMax")
-    trees.map(_.foldMax).foreach(println)
-    println("foldDepth")
-    trees.map(_.foldDepth).foreach(println)
-    println("foldMap")
-    trees.map(_.map(_ + 1)).foreach(println)
-  }
 }

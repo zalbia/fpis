@@ -131,12 +131,4 @@ object Either {
 
   def mkPerson(name: String, age: Int): Either[String, Person] =
     map2ErrorMkString(mkName(name), mkAge(age))(Person)
-
-  def main(args: Array[String]): Unit =
-    List(
-      mkPerson("", -1),
-      mkPerson("Foo", -1),
-      mkPerson(null, 0),
-      mkPerson("Foo", 0)
-    ).foreach(println)
 }
