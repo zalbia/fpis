@@ -61,11 +61,11 @@ object Either {
     }
 
   // exercise 4.7
-  def traverse[E, A](es: List[Either[E, A]])(f: A => Either[E, A]): Either[E, List[A]] =
-    es.foldRight[Either[E, List[A]]](Right(List.empty))((a, b) => a.map2(b)(_ :: _))
+  def traverse[E, A, B](es: List[A])(f: A => Either[E, B]): Either[E, List[B]] =
+    es.foldRight[Either[E, List[B]]](Right(List.empty))((a, b) => f(a).map2(b)(_ :: _))
 
   def sequence[E, A](es: List[Either[E, A]]): Either[E, List[A]] =
-    traverse(es)(Right(_))
+    traverse(es)(identity)
 
   // end of exercise 4.7
 
