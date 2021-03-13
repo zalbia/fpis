@@ -1,9 +1,7 @@
 package part1.chapter4
 
-import scala.util.Try
-
 sealed trait Option[+A] { self =>
-  import Option.{ None, Some }
+  import Option.{None, Some}
 
   // exercise 4.1
   def flatMap[B](f: A => Option[B]): Option[B] = self match {
